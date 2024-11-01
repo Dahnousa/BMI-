@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة مؤشر كتلة الجسم</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result-row {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        
+        .result-point {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>حاسبة مؤشر كتلة الجسم</h1>
+        <div class="form-group">
+            <label for="height">الطول (سم)</label>
+            <input type="number" id="height" placeholder="أدخل طولك بالسنتيمتر" required>
+        </div>
+        <div class="form-group">
+            <label for="weight">الوزن (كجم)</label>
+            <input type="number" id="weight" placeholder="أدخل وزنك بالكيلوجرام" required>
+        </div>
+        <button onclick="calculateBMI()">احسب مؤشر كتلة الجسم</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            
+            if (!height || !weight) {
+                alert('الرجاء إدخال الطول والوزن');
+                return;
+            }
+
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            const resultDiv = document.getElementById('result');
+            
+            let category, color, recommendations;
+            
+            if (bmi < 18.5) {
+                category = "نقص في الوزن";
+                color = "#3498db";
+                recommendations = [
+                    "• يُنصح بزيادة السعرات الحرارية اليومية",
+                    "• تناول وجبات متعددة صغيرة خلال اليوم",
+                    "• التركيز على الأطعمة الغنية بالبروتين"
+                ];
+            } else if (bmi < 25) {
+                category = "وزن صحي";
+                color = "#2ecc71";
+                recommendations = [
+                    "• حافظ على نمط حياتك الصحي",
+                    "• واظب على ممارسة الرياضة",
+                    "• تناول غذاء متوازن"
+                ];
+            } else if (bmi < 30) {
+                category = "زيادة في الوزن";
+                color = "#f1c40f";
+                recommendations = [
+                    "• قلل من السعرات الحرارية اليومية",
+                    "• زد من النشاط البدني",
+                    "• تجنب الأطعمة المصنعة"
+                ];
+            } else {
+                category = "سمنة";
+                color = "#e74c3c";
+                recommendations = [
+                    "• استشر أخصائي تغذية",
+                    "• ابدأ برنامج رياضي منتظم",
+                    "• راقب نظامك الغذائي بدقة"
+                ];
+            }
+            
+            resultDiv.style.display = 'block';
+            resultDiv.style.backgroundColor = `${color}15`;
+            resultDiv.style.borderRight = `4px solid ${color}`;
+            
+            resultDiv.innerHTML = `
+                <div class="result-row">
+                    <span class="result-point">مؤشر كتلة الجسم:</span> ${bmi.toFixed(1)}
+                </div>
+                <div class="result-row">
+                    <span class="result-point">التصنيف:</span> ${category}
+                </div>
+                <div class="result-row">
+                    <span class="result-point">التوصيات:</span>
+                    ${recommendations.join('<br>')}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
